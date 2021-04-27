@@ -75,4 +75,6 @@ func TestAsync(t *testing.T) {
 			t.Errorf("m2 %v: expect %v", m2, s.m2)
 		}
 	}
+
+	time.Sleep(time.Second * 10)
 }

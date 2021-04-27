@@ -1,6 +1,8 @@
 package paraller
 
-import "context"
+import (
+	"context"
+)
 
 type Paraller struct {
 	fn      func() error
@@ -35,7 +37,7 @@ func Async(fn func() error) *Paraller {
 
 // 阻塞等待所有异步调用
 func Await(ctx context.Context, ps ...*Paraller) error {
-	errChan := make(chan error, 1)
+	errChan := make(chan error)
 	for _, p := range ps {
 		go func(p *Paraller) {
 			errChan <- p.Await()
@@ -43,16 +45,26 @@ func Await(ctx context.Context, ps ...*Paraller) error {
 	}
 
 	var cnt int
+	cancelFn := func(cnt int) {
+		for range errChan {
+			cnt++
+			if cnt == len(ps) {
+				break
+			}
+		}
+	}
 	for {
 		select {
 		case <-ctx.Done():
+			go cancelFn(cnt)
 			return ctx.Err()
 		case err := <-errChan:
+			cnt++
 			if err != nil {
+				go cancelFn(cnt)
 				return err
 			}
 
-			cnt++
 			if cnt == len(ps) {
 				return nil
 			}
