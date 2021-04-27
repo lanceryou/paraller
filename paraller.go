@@ -45,7 +45,7 @@ func Await(ctx context.Context, ps ...*Paraller) error {
 	}
 
 	var cnt int
-	cancelFn := func(cnt int) {
+	cancelFn := func() {
 		for range errChan {
 			cnt++
 			if cnt == len(ps) {
@@ -56,12 +56,12 @@ func Await(ctx context.Context, ps ...*Paraller) error {
 	for {
 		select {
 		case <-ctx.Done():
-			go cancelFn(cnt)
+			go cancelFn()
 			return ctx.Err()
 		case err := <-errChan:
 			cnt++
 			if err != nil {
-				go cancelFn(cnt)
+				go cancelFn()
 				return err
 			}
 
