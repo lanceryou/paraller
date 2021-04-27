@@ -46,6 +46,9 @@ func Await(ctx context.Context, ps ...*Paraller) error {
 
 	var cnt int
 	cancelFn := func() {
+		if cnt == len(ps) {
+			return
+		}
 		for range errChan {
 			cnt++
 			if cnt == len(ps) {
