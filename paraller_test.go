@@ -51,6 +51,14 @@ func TestAsync(t *testing.T) {
 			m2:  "normal f2",
 			err: sleepErr,
 		},
+		{
+			f1:  func() error { m1 = "latency f1"; time.Sleep(3 * time.Second); return errors.New("long sleep err") },
+			f2:  func() error { m2 = "normal f2"; time.Sleep(time.Second); return sleepErr },
+			ctx: context.TODO(),
+			m1:  "latency f1",
+			m2:  "normal f2",
+			err: sleepErr,
+		},
 	}
 
 	for _, s := range st {
