@@ -1,12 +1,18 @@
 # paraller
 一个简单的异步库，支持用同步方式写异步代码
 
+##  安装方式
+
+```go
+go get github.com/lanceryou/paraller
+```
+
 ## paraller api
 
 + Async 返回paraller对象，异步的去调用函数
 + Await 只能在异步代码中使用，会阻塞等待结果
 
-## 使用方式
+## 开始使用
 
 ```go
 
