@@ -4,7 +4,7 @@
 ##  安装方式
 
 ```go
-go get github.com/lanceryou/paraller
+go get -u github.com/lanceryou/paraller
 ```
 
 ## paraller api
