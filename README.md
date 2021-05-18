@@ -25,7 +25,7 @@ s2 := paraller.Async(func()error{
 })
 
 s3 := paraller.Async(func() error{
-	if err := s1.Await(); err != nil{
+    if err := s1.Await(); err != nil{
 		return err
     }
     
